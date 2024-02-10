@@ -1,3 +1,5 @@
+using expansetrackerAPI.Data.Repo;
+using expansetrackerAPI.Interfaces;
 using expansetrackerAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +24,8 @@ builder.Services.AddAuthentication(options =>
 
 });
 
+builder.Services.AddTransient<IUserRepository,UserRepository>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -37,7 +41,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
