@@ -35,4 +35,11 @@ namespace expansetrackerAPI.Models
         public string CountryCode { get; set; }
 
     }
+    public class SessionRegistration
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public string Token { get; set; }
+        public DateTime ExpiryDate { get; set; }
+    }
 }

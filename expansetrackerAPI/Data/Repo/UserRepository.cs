@@ -9,9 +9,9 @@ namespace expansetrackerAPI.Data.Repo
     public class UserRepository : IUserRepository
     {
         private readonly ExpanseDbContext _context;
-        public UserRepository(ExpanseDbContext expanseDbContext)
+        public UserRepository(ExpanseDbContext expanseDbContext,SessionRepository sessionRepository)
         {
-                _context = expanseDbContext;
+            _context = expanseDbContext;
         }
         public void Register(UserRegisterApi userRegistraion)
         {
@@ -65,5 +65,6 @@ namespace expansetrackerAPI.Data.Repo
                 return true;
             }
         }
+
     }
 }

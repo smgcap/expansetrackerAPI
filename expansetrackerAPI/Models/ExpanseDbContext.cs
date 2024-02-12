@@ -10,5 +10,6 @@ namespace expansetrackerAPI.Models
             
         }
         public DbSet<UserRegistraion> userRegistraions { get; set; }
+        //public DbSet<SessionRegistration> sessionRegistraions { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using expansetrackerAPI.Interfaces;
+﻿using expansetrackerAPI.BAL;
+using expansetrackerAPI.Data.Repo;
+using expansetrackerAPI.Interfaces;
 using expansetrackerAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,14 +14,14 @@ namespace expansetrackerAPI.Controllers
     [ApiController]
     public class UserRegistrationController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+        private readonly JwtService _jwtService;
         private readonly IUserRepository _userRepository;
         private readonly ExpanseDbContext _context;
         Response response = new Response();
 
-        public UserRegistrationController(IConfiguration configuration,ExpanseDbContext expanseDbContext,IUserRepository userRepository)
+        public UserRegistrationController(JwtService jwtService, ExpanseDbContext expanseDbContext,IUserRepository userRepository)
         {
-            _configuration = configuration;
+            _jwtService = jwtService;
             _context = expanseDbContext;
             _userRepository = userRepository;
         }
@@ -53,10 +55,14 @@ namespace expansetrackerAPI.Controllers
                 response.Message = "Unauthorised invalid passsword";
                 return response;
             }
+            else
+            {
+                var token = _jwtService.GenerateJwtToken(user.UserName);
+
+                return Ok(new { token });
+
+            }
             
-            response.Status = 200;
-            response.Message = "Welcome"+user.FirstName;
-            return response;
         }
         [HttpGet]
         [Authorize]
@@ -68,3 +74,4 @@ namespace expansetrackerAPI.Controllers
         }
     }
 }
+ 
