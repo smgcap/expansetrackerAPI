@@ -12,16 +12,12 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
-        builder.Services.AddDbContext<ExpanseDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString")));
-
-        builder.Services.AddTransient<IUserRepository, UserRepository>();
-
-        builder.Services.AddControllers();
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
+        builder.Services.AddAuthentication(x =>
+        {
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
@@ -35,6 +31,15 @@ internal class Program
             };
         });
 
+        // Add services to the container.
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IJwtService, JwtService>();
+        builder.Services.AddDbContext<ExpanseDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString")));
+
+
+        builder.Services.AddControllers();
+       
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

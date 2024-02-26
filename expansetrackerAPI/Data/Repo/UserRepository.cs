@@ -9,7 +9,7 @@ namespace expansetrackerAPI.Data.Repo
     public class UserRepository : IUserRepository
     {
         private readonly ExpanseDbContext _context;
-        public UserRepository(ExpanseDbContext expanseDbContext,SessionRepository sessionRepository)
+        public UserRepository(ExpanseDbContext expanseDbContext)
         {
             _context = expanseDbContext;
         }

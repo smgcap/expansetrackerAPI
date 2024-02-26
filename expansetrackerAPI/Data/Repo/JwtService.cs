@@ -14,17 +14,24 @@ namespace expansetrackerAPI.Data.Repo
             _configuration = configuration;
         }
 
-        public string GenerateJwtToken(string username)
+        public string GenerateJwtToken(string userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+            //var claims = new List<Claim>{
+            //    new(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+            //    new(JwtRegisteredClaimNames.Email,request.Email),
+            //    new(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+            //};
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                new Claim(ClaimTypes.Name, username)
-            }),
+                    new Claim(JwtRegisteredClaimNames.Sub, userId)
+                }),
                 Expires = DateTime.UtcNow.AddHours(1), // Token expiration time
+                Issuer = "your-issuer",
+                Audience = "your-audience",
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

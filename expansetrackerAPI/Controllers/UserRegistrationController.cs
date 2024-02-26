@@ -14,16 +14,16 @@ namespace expansetrackerAPI.Controllers
     [ApiController]
     public class UserRegistrationController : ControllerBase
     {
-        private readonly JwtService _jwtService;
         private readonly IUserRepository _userRepository;
+        private readonly IJwtService _jwtService;
         private readonly ExpanseDbContext _context;
         Response response = new Response();
 
-        public UserRegistrationController(JwtService jwtService, ExpanseDbContext expanseDbContext,IUserRepository userRepository)
+        public UserRegistrationController(IJwtService jwtService, ExpanseDbContext expanseDbContext,IUserRepository userRepository)
         {
-            _jwtService = jwtService;
             _context = expanseDbContext;
             _userRepository = userRepository;
+            _jwtService = jwtService;
         }
 
         [HttpPost]
@@ -57,20 +57,12 @@ namespace expansetrackerAPI.Controllers
             }
             else
             {
-                var token = _jwtService.GenerateJwtToken(user.UserName);
+                var token = _jwtService.GenerateJwtToken(user.ID.ToString());   
 
                 return Ok(new { token });
 
             }
             
-        }
-        [HttpGet]
-        [Authorize]
-        public async Task<ActionResult<Response>> GetPersonalDetail()
-        {
-            response.Status = 200;
-            response.Message = "Welcome";
-            return response;
         }
     }
 }
