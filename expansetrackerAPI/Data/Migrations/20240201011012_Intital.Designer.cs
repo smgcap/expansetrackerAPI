@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using expansetrackerAPI.Models;
+using expansetrackerAPI.Data;
 
 #nullable disable
 
 namespace expansetrackerAPI.Migrations
 {
     [DbContext(typeof(ExpanseDbContext))]
-    partial class ExpanseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240201011012_Intital")]
+    partial class Intital
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,13 +56,9 @@ namespace expansetrackerAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("Password")
+                    b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordKey")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
