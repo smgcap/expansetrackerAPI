@@ -1,6 +1,6 @@
+using expansetrackerAPI.Data;
 using expansetrackerAPI.Data.Repo;
 using expansetrackerAPI.Interfaces;
-using expansetrackerAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +12,18 @@ internal class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        // Add services to the container.
+        builder.Services.AddDbContext<ExpanseDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("ConnString")));
+
+        builder.Services.AddTransient<IUserRepository, UserRepository>();
+        builder.Services.AddTransient<ISessionRepository, SessionRepository>();
+
+
+        builder.Services.AddControllers();
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
         builder.Services.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
